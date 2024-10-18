@@ -3,18 +3,13 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { web3AuthConfig, authAdapterConfig } from "./config/web3auth";
 
 // EVM
 import Web3 from "web3";
 
-import StartkNetRPC from "./RPC/startkNetRPC"; // for using starkex
 import EthereumRPC from "./RPC/ethRPC-web3"; // for using web3.js
-import SolanaRPC from "./RPC/solanaRPC"; // for using solana
-import TezosRPC from "./RPC/tezosRPC"; // for using tezos
-import PolkadotRPC from "./RPC/polkadotRPC"; // for using polkadot
-import NearRPC from "./RPC/nearRPC";
+
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
