@@ -44,40 +44,7 @@ function App() {
     init();
   }, []);
 
-  const getAllAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    // EVM chains
-    const polygon_address = await getPolygonAddress();
-    const bnb_address = await getBnbAddress();
 
-    const rpcETH = new EthereumRPC(provider!);
-    const privateKey = await rpcETH.getPrivateKey();
-
-    const tezosRPC = new TezosRPC(privateKey);
-    const solanaRPC = new SolanaRPC(privateKey);
-    const polkadotRPC = new PolkadotRPC(privateKey);
-    const starkNetRPC = new StartkNetRPC(privateKey);
-    const nearRPC = new NearRPC(provider!);
-
-    const solana_address = await solanaRPC.getAccounts();
-    const tezos_address = await tezosRPC.getAccounts();
-    const starknet_address = await starkNetRPC.getAccounts();
-    const polkadot_address = await polkadotRPC.getAccounts();
-    const near_address = await nearRPC.getAccounts();
-
-    uiConsole(
-      "Polygon Address: " + polygon_address,
-      "BNB Address: " + bnb_address,
-      "Solana Address: " + solana_address,
-      "Near Address: " + near_address?.["Account ID"],
-      "Tezos Address: " + tezos_address,
-      "StarkNet Address: " + starknet_address,
-      "Polkadot Address: " + polkadot_address
-    );
-  };
 
   const getAllBalances = async () => {
     if (!provider) {
@@ -88,20 +55,14 @@ function App() {
     const ethRPC = new EthereumRPC(provider!);
     const privateKey = await ethRPC.getPrivateKey();
 
-    const tezosRPC = new TezosRPC(privateKey);
-    const solanaRPC = new SolanaRPC(privateKey);
-    const polkadotRPC = new PolkadotRPC(privateKey);
+   
 
     const eth_balance = await ethRPC.getBalance();
-    const solana_balance = await solanaRPC.getBalance();
-    const tezos_balance = await tezosRPC.getBalance();
-    const polkadot_balance = await polkadotRPC.getBalance();
+
 
     uiConsole(
       "Ethereum Balance: " + eth_balance,
-      "Solana Balance: " + solana_balance,
-      "Tezos Balance: " + tezos_balance,
-      "Polkadot Balance: " + polkadot_balance
+      
     );
   };
 
@@ -188,61 +149,7 @@ function App() {
     uiConsole(signedMessage);
   };
 
-  const getPolygonAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new EthereumRPC(provider);
-    const privateKey = await rpc.getPrivateKey();
 
-    const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x13882",
-          rpcTarget: "https://rpc.ankr.com/polygon_amoy",
-          displayName: "Polygon Amoy Testnet",
-          blockExplorerUrl: "https://amoy.polygonscan.com",
-          ticker: "MATIC",
-          tickerName: "MATIC",
-          logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
-        },
-      },
-    });
-    await polygonPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(polygonPrivateKeyProvider);
-    const address = (await web3.eth.getAccounts())[0];
-    return address;
-  };
-
-  const getBnbAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new EthereumRPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-
-    const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x38",
-          rpcTarget: "https://rpc.ankr.com/bsc",
-          displayName: "Binance SmartChain Mainnet",
-          blockExplorerUrl: "https://bscscan.com/",
-          ticker: "BNB",
-          tickerName: "BNB",
-          logo: "https://cryptologos.cc/logos/bnb-bnb-logo.png",
-        },
-      },
-    });
-    await bnbPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(bnbPrivateKeyProvider);
-    const address = (await web3.eth.getAccounts())[0];
-    return address;
-  };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -275,11 +182,7 @@ function App() {
             Get ETH Balance
           </button>
         </div>
-        <div>
-          <button onClick={getAllAccounts} className="card">
-            Get All Accounts
-          </button>
-        </div>
+
         <div>
           <button onClick={getAllBalances} className="card">
             Get All Balances
@@ -319,7 +222,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & React Multi-chain Example
+        & React Eth-chain Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
